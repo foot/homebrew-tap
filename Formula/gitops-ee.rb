@@ -10,8 +10,8 @@ class GitopsEe < Formula
   depends_on :macos
 
   on_macos do
-    url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-darwin-amd64", :using => WGEAuthDownloadStrategy
-    sha256 "75dfdc8a71ebdad92889ea88ccf85815880dacd116c23a032368a0fc75030334"
+    url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-darwin-x86_64.tar.gz", :using => WGEAuthDownloadStrategy
+    sha256 "f3351ab57b62bd344c2567c6dd34f47acf640ef38e9d8806a61abd0d02a871d0"
 
     def install
       bin.install "gitops"
