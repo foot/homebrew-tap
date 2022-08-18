@@ -7,30 +7,69 @@ class GitopsEe < Formula
   desc "GitOps support for Kubernetes"
   homepage "https://docs.gitops.weave.works/docs/getting-started"
   version "0.9.2-rc.1"
-  depends_on :macos
 
   on_macos do
-    url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-darwin-x86_64.tar.gz", :using => WGEAuthDownloadStrategy
-    sha256 "f3351ab57b62bd344c2567c6dd34f47acf640ef38e9d8806a61abd0d02a871d0"
+    if Hardware::CPU.intel?
+      url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-darwin-x86_64.tar.gz", :using => WGEAuthDownloadStrategy
+      sha256 "8c42338e51f5fabbce25441010fe7ff43ea0c5e2c154fd06415c820804b3e7c4"
 
-    def install
-      bin.install "gitops"
-      # Install bash completion
-      output = Utils.popen_read("#{bin}/gitops completion bash")
-      (bash_completion/"gitops").write output
+      def install
+        bin.install "gitops"
+        # Install bash completion
+        output = Utils.popen_read("#{bin}/gitops completion bash")
+        (bash_completion/"gitops").write output
 
-      # Install zsh completion
-      output = Utils.popen_read("#{bin}/gitops completion zsh")
-      (zsh_completion/"_gitops").write output
+        # Install zsh completion
+        output = Utils.popen_read("#{bin}/gitops completion zsh")
+        (zsh_completion/"_gitops").write output
+      end
     end
-
     if Hardware::CPU.arm?
-      def caveats
-        <<~EOS
-          The darwin_arm64 architecture is not supported for the GitopsEe
-          formula at this time. The darwin_amd64 binary may work in compatibility
-          mode, but it might not be fully supported.
-        EOS
+      url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-darwin-arm64.tar.gz", :using => WGEAuthDownloadStrategy
+      sha256 "a57993fb986de0365abaa7a7543ebf433451a2032b70c0b13a0861a1a064a733"
+
+      def install
+        bin.install "gitops"
+        # Install bash completion
+        output = Utils.popen_read("#{bin}/gitops completion bash")
+        (bash_completion/"gitops").write output
+
+        # Install zsh completion
+        output = Utils.popen_read("#{bin}/gitops completion zsh")
+        (zsh_completion/"_gitops").write output
+      end
+    end
+  end
+
+  on_linux do
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-linux-arm64.tar.gz", :using => WGEAuthDownloadStrategy
+      sha256 "142a3b5aeb9fa8251ceb3d8f575dee50c6728889e5fc0d19a8b17aeadf7275cb"
+
+      def install
+        bin.install "gitops"
+        # Install bash completion
+        output = Utils.popen_read("#{bin}/gitops completion bash")
+        (bash_completion/"gitops").write output
+
+        # Install zsh completion
+        output = Utils.popen_read("#{bin}/gitops completion zsh")
+        (zsh_completion/"_gitops").write output
+      end
+    end
+    if Hardware::CPU.intel?
+      url "https://artifacts.wge.dev.weave.works/releases/bin/0.9.2-rc.1/gitops-linux-x86_64.tar.gz", :using => WGEAuthDownloadStrategy
+      sha256 "b3763c9a1ea3ed05a0f4cc7ef84d027e3b0dd94fb8d019c63d99ff1d3076bf10"
+
+      def install
+        bin.install "gitops"
+        # Install bash completion
+        output = Utils.popen_read("#{bin}/gitops completion bash")
+        (bash_completion/"gitops").write output
+
+        # Install zsh completion
+        output = Utils.popen_read("#{bin}/gitops completion zsh")
+        (zsh_completion/"_gitops").write output
       end
     end
   end
